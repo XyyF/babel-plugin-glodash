@@ -1,9 +1,6 @@
 import {addDefault} from '@babel/helper-module-imports';
 import {isModuleDeclaration} from '@babel/types';
-
-function isLodash(id) {
-    return /^lodash(?:-compat|-es)?$/.test(id)
-}
+import {isLodash} from './utils'
 
 export default function (babel) {
     const { types: t } = babel;
@@ -79,15 +76,17 @@ export default function (babel) {
             CallExpression: {
                 exit(path) {
                     const {file} = path.hub
-                    const object = path.node.callee.object
+                    const {node} = path
+                    const object = node.callee.object
+                    // 是以属性调用的形式使用 glodash.cloneDeep()
                     if (object && object.name !== 'glodash') return
-                    // 是否定义了 glodash
-                    if (file.scope.getBinding('glodash') || !path.node.callee.property) return
-                    const property = path.node.callee.property.name
+                    // 是否自定义了 glodash
+                    if (file.scope.getBinding('glodash') || !node.callee.property) return
+                    const property = node.callee.property.name
                     if (imports.length === 0) {
                         addDefault(path, `lodash/${property}`, {nameHint: property})
                         path.replaceWith(
-                            t.callExpression(t.identifier(`${property}`), [])
+                            t.callExpression(t.identifier(`_${property}`), [])
                         )
                         return
                     }
@@ -96,8 +95,10 @@ export default function (babel) {
                             return e.kind !== 'default' && e.local === property
                         })
                         if (isDefine) continue;
-                        // const name = addDefault(path, 'lodash', {nameHint: 'cloneDeep'})
-                        // path.replaceWith({type: path.type, name: 'cloneDeep()'})
+                        addDefault(path, `lodash/${property}`, {nameHint: property})
+                        path.replaceWith(
+                            t.callExpression(t.identifier(`_${property}`), [])
+                        )
                     }
                 },
             },
