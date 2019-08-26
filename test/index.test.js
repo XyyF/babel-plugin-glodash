@@ -1,14 +1,29 @@
 import _ from 'lodash'
 import fs from 'fs'
+import glob from 'glob'
 import path from 'path'
+import { assert } from 'chai'
 import {transformFileSync} from '@babel/core'
 
 import plugin from '../src/index'
 
-it('foo is an alias to baz', () => {
-    const actualPath = path.join(__dirname, 'fixtrues/import-none/actual.js')
-    const {code} = transformFileSync(actualPath, {plugins: [plugin]});
-    const expected = fs.readFileSync(path.join(__dirname, 'fixtrues/import-none/expected.js'), 'utf8')
+function getTestName(testPath) {
+    return path.basename(testPath).split('-').join(' ')
+}
 
-    expect(_.trim(code)).toBe(_.trim(expected))
+describe('cherry-picked modular builds', function() {
+    this.timeout(0)
+
+    _.each(glob.sync(path.join(__dirname, 'fixtures/*/')), (testPath) => {
+        const testName = getTestName(testPath)
+        const actualPath = path.join(testPath, 'actual.js')
+        const expectedPath = path.join(testPath, 'expected.js')
+
+        it(`should work with ${ testName }`, () => {
+            const expected = fs.readFileSync(expectedPath, 'utf8')
+            const actual = transformFileSync(actualPath, {plugins: [plugin]}).code
+
+            assert.strictEqual(_.trim(actual), _.trim(expected))
+        })
+    })
 })

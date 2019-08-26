@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --check-leaks --require @babel/register"
   },
   "author": "",
   "license": "ISC",
@@ -13,8 +13,11 @@
     "@babel/core": "^7.5.5",
     "@babel/polyfill": "^7.4.4",
     "@babel/preset-env": "^7.5.5",
+    "@babel/register": "^7.5.5",
     "babel-plugin-add-module-exports": "^1.0.2",
-    "glob": "^7.1.4"
+    "chai": "^4.2.0",
+    "glob": "^7.1.4",
+    "mocha": "^6.2.0"
   },
   "dependencies": {
     "lodash": "^4.17.15"

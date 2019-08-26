@@ -91,7 +91,8 @@ export default function (babel) {
                         return
                     }
                     for (let module of imports) {
-                        const isDefine = module.specifier.find(e => {
+                        const specifier = module.specifier || []
+                        const isDefine = specifier.find(e => {
                             return e.kind !== 'default' && e.local === property
                         })
                         if (isDefine) continue;
