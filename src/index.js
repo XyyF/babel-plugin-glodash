@@ -1,14 +1,6 @@
-import _ from 'lodash'
 import {addDefault} from '@babel/helper-module-imports';
-import {isModuleDeclaration} from '@babel/types';
-import {isLodash} from './utils'
 
-/** The error message used when chain sequences are detected. */
-const CHAIN_ERROR = [
-    'Lodash chain sequences are not supported by babel-plugin-lodash.',
-    'Consider substituting chain sequences with composition patterns.',
-    'See https://medium.com/making-internets/why-using-chain-is-a-mistake-9bc1f80d51ba'
-].join('\n')
+const CHAIN_ERROR = 'Lodash chain sequences are not supported by babel-plugin-elfin.'
 
 export default function (babel) {
     const {types: t} = babel;
@@ -27,6 +19,10 @@ export default function (babel) {
                     if (file.scope.getBinding('glodash') || !property) return
                     // module标示
                     const propertyName = property.name
+                    // 不支持chain的链式调用
+                    if (propertyName === 'chain') {
+                        throw path.buildCodeFrameError(CHAIN_ERROR)
+                    }
                     addDefault(path, `lodash/${propertyName}`, {nameHint: propertyName})
                     path.replaceWith(
                         t.callExpression(t.identifier(`_${propertyName}`), [])

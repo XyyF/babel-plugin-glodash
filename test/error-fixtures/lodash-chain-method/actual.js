@@ -1,0 +1,1 @@
+glodash.chain().map();

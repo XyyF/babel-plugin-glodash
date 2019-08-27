@@ -26,4 +26,19 @@ describe('cherry-picked modular builds', function() {
             assert.strictEqual(_.trim(actual), _.trim(expected))
         })
     })
+
+   /*----------------------------------------------------------*/
+
+    _.each(glob.sync(path.join(__dirname, 'error-fixtures/*/')), (testPath) => {
+        const testName = getTestName(testPath)
+        const actualPath = path.join(testPath, 'actual.js')
+
+        it(`should throw an error with ${ testName }`, () => {
+            const error = _.attempt(() => transformFileSync(actualPath, {
+                'plugins': [plugin]
+            }))
+
+            assert.ok(_.isError(error))
+        })
+    })
 })
