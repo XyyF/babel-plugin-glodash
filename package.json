@@ -1,12 +1,17 @@
 {
-  "name": "@edu_sass_fe-xjl/babel-plugin-elfin",
+  "name": "babel-plugin-glodash",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "elfin babel plugin",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:XyyF/babel-plugin-elfin.git"
+  },
+  "main": "lib/index.js",
   "scripts": {
+    "build": "babel src --out-dir lib || true",
     "test": "mocha --check-leaks --require @babel/register"
   },
-  "author": "",
+  "author": "rengar",
   "license": "ISC",
   "devDependencies": {
     "@babel/cli": "^7.5.5",
@@ -17,9 +22,10 @@
     "babel-plugin-add-module-exports": "^1.0.2",
     "chai": "^4.2.0",
     "glob": "^7.1.4",
+    "lodash": "^4.17.15",
     "mocha": "^6.2.0"
   },
   "dependencies": {
-    "lodash": "^4.17.15"
+    "@babel/helper-module-imports": "^7.0.0"
   }
 }
