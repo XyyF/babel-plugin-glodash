@@ -24,8 +24,9 @@ export default function (babel) {
                     if (propertyName === 'chain') {
                         throw path.buildCodeFrameError(CHAIN_ERROR)
                     }
-                    addDefault(path, `lodash/${propertyName}`, {nameHint: propertyName})
-                    path.replaceWith(t.identifier(`_${propertyName}`))
+                    // 处理参数同名的情况
+                    const {name} = addDefault(path, `lodash/${propertyName}`, {nameHint: propertyName})
+                    path.replaceWith(t.identifier(name))
                 },
             },
         }
