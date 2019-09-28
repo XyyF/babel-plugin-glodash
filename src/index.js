@@ -14,7 +14,7 @@ export default function (babel) {
                     const {node} = path
                     const object = node.object
                     // 是以属性调用的形式使用 glodash.cloneDeep()
-                    if (object && object.name !== 'glodash') return
+                    if (!t.isIdentifier(path.node.object, {name: 'glodash'})) return
                     const property = node.property
                     // 是否自定义了 glodash 变量
                     if (file.scope.getBinding('glodash') || !property) return
