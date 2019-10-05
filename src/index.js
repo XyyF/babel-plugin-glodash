@@ -12,7 +12,6 @@ export default function (babel) {
                     if (!path.hub) return
                     const {file} = path.hub
                     const {node} = path
-                    const object = node.object
                     // 是以属性调用的形式使用 glodash.cloneDeep()
                     if (!t.isIdentifier(path.node.object, {name: 'glodash'})) return
                     const property = node.property
