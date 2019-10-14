@@ -5,7 +5,7 @@ import path from 'path'
 import { assert } from 'chai'
 import {transformFileSync} from '@babel/core'
 
-import plugin from '../src/index'
+import plugin from '../lib/index'
 
 function getTestName(testPath) {
     return path.basename(testPath).split('-').join(' ')
