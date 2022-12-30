@@ -24,7 +24,7 @@
     "chai": "4.2.0",
     "glob": "7.1.4",
     "lodash": "4.17.15",
-    "mocha": "6.2.0"
+    "mocha": "10.2.0"
   },
   "dependencies": {
     "@types/lodash": "^4.14.141",
